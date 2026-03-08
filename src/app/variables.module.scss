@@ -1,0 +1,29 @@
+@use './variables' as *;
+
+:export {
+  primary600: $primary600;
+  primary300: $primary300;
+  gray900: $gray900;
+  gray800: $gray800;
+  gray600: $gray600;
+  gray200: $gray200;
+  gray0: $gray0;
+  deafult: $deafult;
+  success300: $success300;
+  success600: $success600;
+  error300: $error300;
+  error600: $error600;
+
+  primary600-dark: $primary600-dark;
+  primary300-dark: $primary300-dark;
+  gray900-dark: $gray900-dark;
+  gray800-dark: $gray800-dark;
+  gray600-dark: $gray600-dark;
+  gray200-dark: $gray200-dark;
+  gray0-dark: $gray0-dark;
+  deafult-dark: $deafult-dark;
+  success300-dark: $success300-dark;
+  success600-dark: $success600-dark;
+  error300-dark: $error300-dark;
+  error600-dark: $error600-dark;
+}

@@ -1,0 +1,35 @@
+.container
+  display: flex
+  min-height: 100vh
+  background-color: var(--gray900)
+  width: 100%
+
+.imageSection
+  display: none
+  position: relative
+  background-color: var(--gray800)
+  overflow: hidden
+
+.imageCover
+  object-fit: cover
+  object-position: center
+  z-index: 1
+
+.imageOverlay
+  object-fit: fill /* Ensures the cutout mask stretches correctly to form the borders regardless of screen aspect ratio */
+  object-position: center
+  z-index: 2
+  pointer-events: none
+
+// Breakpoints for the Global Auth Layout (matching original login styles)
+@media (min-width: 720px)
+  .imageSection
+    display: block
+    flex: 1
+    
+  // Since formSection is inside individual app paths, we only handle the layout proportion mapping here
+  // The matching child proportion style is safely preserved via Flexbox behavior inside container
+
+@media (min-width: 1132px)
+  .imageSection
+    flex: 1.2

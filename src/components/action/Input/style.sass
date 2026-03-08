@@ -1,0 +1,90 @@
+.input-wrapper
+  position: relative
+  display: flex
+  align-items: center
+  width: 100%
+
+.input
+  width: 100%
+  height: 48px
+  padding: 0 16px
+  border: 1px solid #D6E8F7
+  border-radius: 4px
+  background: transparent
+  color: var(--gray0)
+  font-size: 16px
+  font-weight: 400
+  outline: none
+  transition: all 0.2s ease
+  font-family: inherit
+
+  &::placeholder
+    color: transparent
+    opacity: 0
+
+  &:focus
+    border-color: var(--primary600)
+    box-shadow: 0 0 0 1px var(--primary600)
+
+  &:disabled
+    opacity: 0.6
+    cursor: not-allowed
+    background: var(--gray800)
+
+  &--loading
+    padding-right: 48px
+
+  &--error
+    border-color: var(--error600)
+    &:focus
+      box-shadow: 0 0 0 1px var(--error600)
+
+  &--password
+    padding-right: 48px
+
+.input-icon-btn
+  position: absolute
+  right: 12px
+  top: 50%
+  transform: translateY(-50%)
+  background: none
+  border: none
+  cursor: pointer
+  color: var(--gray200)
+  display: flex
+  align-items: center
+  justify-content: center
+  padding: 4px
+  transition: color 0.2s
+  border-radius: 4px
+  outline: none
+
+  &:hover
+    color: var(--foreground)
+    
+  &:focus-visible
+    box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--primary600)
+
+.input-loader-wrapper
+  position: absolute
+  right: 16px
+  top: 50%
+  transform: translateY(-50%)
+  display: flex
+  align-items: center
+  justify-content: center
+  pointer-events: none
+
+.input-loader
+  width: 16px
+  height: 16px
+  border: 2px solid var(--primary600)
+  border-bottom-color: transparent
+  border-radius: 50%
+  animation: input-rotation 1s linear infinite
+
+@keyframes input-rotation
+  0%
+    transform: rotate(0deg)
+  100%
+    transform: rotate(360deg)

@@ -1,0 +1,163 @@
+.field
+  position: relative
+  display: flex
+  width: 100%
+  gap: 4px // spacing for errors or descriptions below the input
+
+  &--vertical
+    flex-direction: column
+
+  &--horizontal
+    flex-direction: row
+    align-items: center
+
+  // The floating label magic
+  // For standard HTML inputs, textareas, and selects
+  // Note: Your inputs *must* have a placeholder=" " space character for this to work natively via CSS!
+  &:has(input:focus),
+  &:has(textarea:focus),
+  &:has(select:focus),
+  &:has(input:not(:placeholder-shown)),
+  &:has(textarea:not(:placeholder-shown)),
+  &:has(select:valid) // Triggers for select options when populated
+    .field-label
+      top: 0
+      transform: translateY(-50%)
+      font-size: 12px
+      background: var(--background) // Breaks the input border with background
+      color: var(--gray200)
+
+  // Primary color when focused
+  &:has(input:focus),
+  &:has(textarea:focus),
+  &:has(select:focus)
+    .field-label
+      color: var(--primary600)
+
+// The label container
+.field-label
+  position: absolute
+  left: 12px
+  top: 24px // Exactly half of the standard 48px input height!
+  transform: translateY(-50%)
+  background: transparent // Transparent initially to show input background
+  padding: 0 4px
+  color: var(--gray200)
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1)
+  pointer-events: none
+  z-index: 10
+  font-weight: 400
+  font-size: 16px
+  margin: 0 // Reset any Label default margins
+
+  // Overrides if disabled
+  &[data-disabled="true"]
+    opacity: 0.5
+
+.field-content
+  position: relative
+  display: flex
+  flex: 1
+  flex-direction: column
+  width: 100%
+
+// Style inputs nested inside field content gracefully
+.field-content input,
+.field-content select,
+.field-content textarea
+  width: 100%
+  height: 48px
+  padding: 0 16px
+  border: 1px solid #D6E8F7 // Color extracted from Figma / matching Separator Grayscale 700
+  border-radius: 4px
+  background: transparent
+  color: var(--foreground)
+  font-size: 16px
+  outline: none
+  transition: border-color 0.2s
+  font-family: inherit
+
+  // Hides the standard placeholder so the floating label logic reigns supreme
+  &::placeholder
+    color: transparent
+    opacity: 0
+
+  &:focus
+    border-color: var(--primary600)
+
+// Specific drop-down arrow logic for standard select elements
+.field-content select
+  appearance: none
+  background-image: url('data:image/svg+xml;utf8,<svg fill="none" stroke="%2350616F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><polyline points="6 9 12 15 18 9"/></svg>')
+  background-repeat: no-repeat
+  background-position: right 16px center
+  background-size: 16px
+  padding-right: 40px
+
+// Standard helper components
+.field-set
+  display: flex
+  flex-direction: column
+  gap: 16px
+
+.field-legend
+  font-weight: 500
+  &--label
+    font-size: 14px
+  &--legend
+    font-size: 16px
+
+.field-group
+  display: flex
+  width: 100%
+  flex-direction: column
+  gap: 20px
+
+.field-title
+  font-size: 14px
+  font-weight: 500
+  color: var(--foreground)
+  display: flex
+  align-items: center
+  gap: 8px
+
+.field-description
+  text-align: left
+  font-size: 14px
+  color: var(--gray200)
+  margin-top: 2px
+
+.field-separator
+  position: relative
+  height: 20px
+  margin: -8px 0
+  font-size: 14px
+
+  &__line
+    position: absolute
+    left: 0
+    right: 0
+    top: 50%
+    transform: translateY(-50%)
+
+  &__content
+    position: relative
+    display: block
+    width: max-content
+    margin: 0 auto
+    background: var(--background)
+    padding: 0 8px
+    color: var(--gray200)
+
+.field-error
+  font-size: 12px
+  color: var(--error600)
+  font-weight: 500
+  margin-top: 2px
+
+.field-error-list
+  margin-left: 16px
+  display: flex
+  list-style-type: disc
+  flex-direction: column
+  gap: 4px

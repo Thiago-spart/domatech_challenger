@@ -1,0 +1,94 @@
+.button
+  display: inline-flex
+  align-items: center
+  justify-content: center
+  font-weight: 500
+  border-radius: 4px
+  border: 1px solid transparent
+  cursor: pointer
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1)
+  font-family: inherit
+  position: relative
+  overflow: hidden
+  outline: none
+
+  &:focus-visible
+    box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--primary600)
+
+  &:disabled
+    opacity: 0.6
+    cursor: not-allowed
+
+  // Sizes
+  &--sm
+    height: 40px
+    padding: 0 16px
+    font-size: 14px
+
+  &--md
+    height: 40px
+    padding: 0 24px
+    font-size: 14px
+
+  &--lg
+    height: 56px
+    padding: 0 32px
+    font-size: 18px
+
+  // Variants
+  &--primary
+    background: var(--primary600)
+    color: var(--gray0)
+
+    &:hover:not(:disabled)
+      background: var(--primary300)
+      transform: translateY(-1px)
+    
+    &:active:not(:disabled)
+      transform: translateY(0)
+
+  &--secondary
+    background: var(--gray800)
+    color: var(--gray0)
+
+    &:hover:not(:disabled)
+      background: var(--gray600)
+  
+  &--outline
+    background: transparent
+    border-color: var(--gray600)
+    color: var(--gray0)
+
+    &:hover:not(:disabled)
+      background: var(--gray800)
+      border-color: var(--gray0)
+
+  &--ghost
+    background: transparent
+    color: var(--gray0)
+
+    &:hover:not(:disabled)
+      background: var(--gray800)
+
+  &--danger
+    background: var(--error600)
+    color: #fff
+
+    &:hover:not(:disabled)
+      background: var(--error300)
+
+// Loader animation
+.button__loader
+  width: 20px
+  height: 20px
+  border: 2.5px solid currentColor
+  border-bottom-color: transparent
+  border-radius: 50%
+  display: inline-block
+  animation: button-rotation 1s linear infinite
+
+@keyframes button-rotation
+  0%
+    transform: rotate(0deg)
+  100%
+    transform: rotate(360deg)
