@@ -20,3 +20,12 @@
 - add inter font to app
 - validate login page style
 - creating default metadata on default layout
+- splitting code in login page
+- creation of metadata for login
+- cpf validation via zod
+- create createAccount schema
+- add number mask and validation via library
+- Error on create account page, it intends the user to log in with magic buttons but doens't allow to it
+- create structure of the create account page
+- Create mask for cpf
+- password validation in real time
