@@ -1,0 +1,132 @@
+.container
+  position: relative
+  height: 100%
+  display: flex
+  align-items: center
+
+.trigger
+  display: flex
+  align-items: center
+  gap: 8px
+  height: 100%
+  padding: 0 12px
+  cursor: pointer
+  border: none
+  background: transparent
+  border-right: 1px solid #D6E8F7
+  flex-shrink: 0
+  min-width: 85px
+  outline: none
+  
+  &:disabled
+    cursor: not-allowed
+    opacity: 0.6
+
+.flag
+  width: 24px
+  height: 16px
+  display: flex
+  align-items: center
+  justify-content: center
+  flex-shrink: 0
+  overflow: hidden
+  border-radius: 2px
+
+  svg, img
+    width: 100%
+    height: 100%
+    object-fit: contain
+
+.selectedDisplay
+  display: flex
+  align-items: center
+  pointer-events: none
+
+.callingCode
+  font-size: 16px
+  color: var(--gray0)
+  font-weight: 400
+
+.dropdown
+  position: absolute
+  top: calc(100% + 4px)
+  left: 0
+  width: 320px
+  background: #FFFFFF
+  border-radius: 6px
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)
+  z-index: 100
+  overflow: hidden
+  border: 1px solid #E2E8F0
+
+.countryList
+  max-height: 300px
+  overflow-y: auto
+  padding: 6px 0
+
+  &::-webkit-scrollbar
+    width: 6px
+  
+  &::-webkit-scrollbar-track
+    background: transparent
+  
+  &::-webkit-scrollbar-thumb
+    background: #E2E8F0
+    border-radius: 3px
+    &:hover
+      background: #CBD5E0
+
+.countryOption
+  width: 100%
+  display: flex
+  align-items: center
+  justify-content: space-between
+  padding: 10px 16px
+  border: none
+  background: transparent
+  cursor: pointer
+  transition: background 0.15s ease
+  gap: 12px
+
+  &:hover
+    background: #F7FAFC
+
+  &.active
+    background: #EDF2F7
+
+.optionMain
+  display: flex
+  align-items: center
+  gap: 12px
+  flex: 1
+  min-width: 0
+
+.optionFlag
+  width: 24px
+  height: 16px
+  flex-shrink: 0
+  border-radius: 2px
+  overflow: hidden
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.05)
+  
+  svg, img
+    width: 100%
+    height: 100%
+    object-fit: contain
+
+.countryName
+  font-size: 14px
+  color: #2D3748
+  font-weight: 400
+  text-align: left
+  white-space: nowrap
+  overflow: hidden
+  text-overflow: ellipsis
+
+.countryCode
+  font-size: 14px
+  color: #718096
+  font-weight: 400
+  flex-shrink: 0
+  text-align: right
+  min-width: 40px

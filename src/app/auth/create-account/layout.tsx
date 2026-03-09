@@ -2,6 +2,8 @@ import styles from "./page.module.sass";
 import Link from "next/link";
 
 import { Metadata } from "next";
+import { GoogleIcon } from "@/components/icons/GoogleIcon";
+import { FacebookIcon } from "@/components/icons/FacebookIcon";
 
 export const metadata: Metadata = {
   title: "Criar conta",
@@ -17,6 +19,17 @@ export default function CreateAccountLayout({
     <section className={styles.formSection}>
       <div className={styles.formWrapper}>
         <h1 className={styles.title}>Acesse com:</h1>
+
+        <div className={styles.socialButtons}>
+          <button type="button" className={styles.socialBtn} disabled aria-label="Criar conta com Google">
+            <GoogleIcon />
+            <span>Google</span>
+          </button>
+          <button type="button" className={styles.socialBtn} disabled aria-label="Criar conta com Facebook">
+            <FacebookIcon />
+            <span>Facebook</span>
+          </button>
+        </div>
 
         <div className={styles.divider}>
           <span>ou cadastre-se com seu e-mail</span>

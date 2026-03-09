@@ -7,6 +7,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { LoginSchema, loginSchema } from "./schema";
 import { Input } from "@/components/action/Input";
 import { Field, FieldError, FieldLabel } from "@/components/action/Field";
+import { GoogleIcon } from "@/components/icons/GoogleIcon";
+import { FacebookIcon } from "@/components/icons/FacebookIcon";
 
 export default function LoginPage() {
   const {
@@ -22,45 +24,47 @@ export default function LoginPage() {
   };
 
   return (
-    <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
-      <Field>
-        <FieldLabel htmlFor="email">E-mail</FieldLabel>
+    <>
+      <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+        <Field>
+          <FieldLabel htmlFor="email">E-mail</FieldLabel>
 
-        <Input
-          placeholder="E-mail"
-          className={styles.input}
-          required
-          error={!!errors.email?.message}
+          <Input
+            placeholder="E-mail"
+            className={styles.input}
+            required
+            error={!!errors.email?.message}
+            isLoading={false}
+            {...register("email")}
+          />
+
+          <FieldError>{errors.email?.message}</FieldError>
+        </Field>
+
+        <Field>
+          <FieldLabel htmlFor="password">Senha</FieldLabel>
+
+          <Input
+            type="password"
+            placeholder="Senha"
+            className={styles.input}
+            required
+            {...register("password")}
+          />
+
+          <FieldError>{errors.password?.message}</FieldError>
+        </Field>
+
+        <Button
+          type="submit"
+          variant="primary"
+          size="sm"
           isLoading={false}
-          {...register("email")}
-        />
-
-        <FieldError>{errors.email?.message}</FieldError>
-      </Field>
-
-      <Field>
-        <FieldLabel htmlFor="password">Senha</FieldLabel>
-
-        <Input
-          type="password"
-          placeholder="Senha"
-          className={styles.input}
-          required
-          {...register("password")}
-        />
-
-        <FieldError>{errors.password?.message}</FieldError>
-      </Field>
-
-      <Button
-        type="submit"
-        variant="primary"
-        size="sm"
-        isLoading={false}
-        disabled={!isReady || !isValid}
-      >
-        Entrar
-      </Button>
-    </form>
+          disabled={!isReady || !isValid}
+        >
+          Entrar
+        </Button>
+      </form>
+    </>
   );
 }
