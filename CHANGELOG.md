@@ -38,5 +38,6 @@
 - Create signup action
 - update phone style and select phone styles to include navigation
 - Create login with google and facebook buttons disabled for future integration
+- integrate login to back-end via next actions
 
 - implement [data table](https://ui.shadcn.com/docs/components/radix/data-table)
