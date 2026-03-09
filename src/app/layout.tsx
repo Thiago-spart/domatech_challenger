@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import Providers from "@/services/Providers";
+
 import "./globals.sass";
+import 'react-phone-number-input/style.css'
 
 const inter = Inter({
   variable: "--font-inter",
@@ -46,7 +49,7 @@ export default function RootLayout({
   return (
     <html lang="pt">
       <body className={`${inter.variable}`}>
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

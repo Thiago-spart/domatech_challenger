@@ -1,0 +1,76 @@
+.countrySelect
+  position: relative
+  display: flex
+  align-items: center
+  height: 100%
+
+.countrySelectButton
+  display: flex
+  align-items: center
+  gap: 8px
+  background: transparent
+  border: none
+  padding: 0 16px
+  cursor: pointer
+  height: 100%
+  outline: none
+  color: var(--gray0)
+  font-size: 16px
+
+.countrySelectFlag
+  width: 24px
+  height: 16px
+  display: flex
+  align-items: center
+  justify-content: center
+  overflow: hidden
+  border-radius: 2px
+
+  svg
+    width: 100%
+    height: 100%
+
+.countrySelectSeparator
+  width: 1px
+  height: 24px
+  background-color: var(--gray600)
+  margin-left: 4px
+
+.countrySelectDropdown
+  position: absolute
+  top: calc(100% + 4px)
+  left: 0
+  width: max-content
+  min-width: 280px
+  max-height: 240px
+  overflow-y: auto
+  background: var(--gray900)
+  border: 1px solid var(--gray600)
+  border-radius: 4px
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2)
+  z-index: 50
+  display: flex
+  flex-direction: column
+
+.countrySelectOption
+  display: flex
+  align-items: center
+  padding: 10px 16px
+  gap: 12px
+  background: transparent
+  border: none
+  width: 100%
+  cursor: pointer
+  text-align: left
+
+  &:hover, &--selected
+    background: var(--gray800)
+
+.countrySelectOptionName
+  flex: 1
+  color: var(--gray0)
+  font-size: 14px
+
+.countrySelectOptionCode
+  color: var(--gray200)
+  font-size: 14px

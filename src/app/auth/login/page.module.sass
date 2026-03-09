@@ -58,6 +58,36 @@
   span
     padding: 0 16px
 
+.socialButtons
+  display: flex
+  gap: 16px
+  width: 100%
+  margin-bottom: 24px
+
+.socialBtn
+  flex: 1
+  display: flex
+  align-items: center
+  justify-content: center
+  gap: 8px
+  height: 48px
+  border: 1px solid #D6E8F7
+  border-radius: 4px
+  background: transparent
+  color: var(--gray200)
+  font-size: 14px
+  font-weight: 500
+  cursor: pointer
+  transition: all 0.2s
+
+  &:hover:not(:disabled)
+    background: var(--gray800)
+    color: var(--gray0)
+
+  &:disabled
+    opacity: 0.5
+    cursor: not-allowed
+
 .form
   width: 100%
   display: flex

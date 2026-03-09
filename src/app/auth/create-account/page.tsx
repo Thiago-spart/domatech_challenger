@@ -7,8 +7,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { CreateAccountSchema, createAccountSchema } from "./schema";
 import { Input } from "@/components/action/Input";
 import { Field, FieldError, FieldLabel } from "@/components/action/Field";
-import PhoneInput from "react-phone-number-input/input";
+import PhoneInput, { parsePhoneNumber } from "react-phone-number-input";
+import pt from 'react-phone-number-input/locale/pt.json'
+import CountrySelect from "@/components/action/CountrySelect";
 import { formatCPFValue } from "../../../utils/cpfMask";
+import { signUpAction } from "./actions";
+import { toast } from "sonner";
+import { redirect, RedirectType } from "next/navigation";
+import { GoogleIcon } from "@/components/icons/GoogleIcon";
+import { FacebookIcon } from "@/components/icons/FacebookIcon";
 
 const CheckIcon = ({ checked }: { checked: boolean }) => (
   <svg
@@ -46,16 +53,49 @@ export default function CreateAccountPage() {
   const {
     register,
     handleSubmit,
+    reset,
     watch,
     control,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isSubmitting },
   } = useForm<CreateAccountSchema>({
     resolver: zodResolver(createAccountSchema),
-    mode: "onChange",
+    mode: "onChange"
   });
 
-  const onSubmit = (data: CreateAccountSchema) => {
-    console.log(data);
+  const handleGoToLoginIn5Seconds = () => {
+    reset();
+
+    setTimeout(() => {
+      redirect('/auth/login', RedirectType.push)
+    }, 5000);
+  }
+
+  const onSubmit = async ({ name, cpf, phone, email, password }: CreateAccountSchema) => {
+    const phoneNumber = parsePhoneNumber(phone);
+
+    try {
+      await signUpAction({
+        nameResponsible: name,
+        phones: [
+          {
+            description: "Pessoal",
+            countryCode: `+${phoneNumber?.countryCallingCode || '55'}`,
+            number: phoneNumber?.nationalNumber || phone,
+            isWhatsApp: true
+          }
+        ],
+        socialIdResponsible: cpf.replace(/\D/g, ''),
+        email,
+        password,
+      });
+
+
+
+      toast.info("Enviamos um código de confirmação para o seu e-mail, você será redirecionado para login em 5 segundos")
+      handleGoToLoginIn5Seconds();
+    } catch (error) {
+      toast.error("Servidor ocupado, por favor tente novamente mais tarde")
+    }
   };
 
   const password = watch("password") || "";
@@ -64,7 +104,6 @@ export default function CreateAccountPage() {
     { label: "1 letra maiúscula", valid: /[A-Z]/.test(password) },
     { label: "1 número", valid: /[0-9]/.test(password) },
     { label: "1 caractere especial", valid: /[^A-Za-z0-9]/.test(password) },
-    { label: "8 caracteres", valid: password.length >= 8 },
   ];
 
   return (
@@ -76,8 +115,7 @@ export default function CreateAccountPage() {
             id="name"
             autoComplete="name full-name"
             placeholder="Nome completo*"
-            isLoading={false}
-            disabled={false}
+            disabled={isSubmitting}
             error={!!errors.name?.message}
             {...register("name")}
           />
@@ -92,8 +130,7 @@ export default function CreateAccountPage() {
             inputMode="numeric"
             autoComplete="cpf"
             placeholder="CPF*"
-            isLoading={false}
-            disabled={false}
+            disabled={isSubmitting}
             error={!!errors.cpf?.message}
             {...register("cpf", {
               onChange: e => {
@@ -107,7 +144,7 @@ export default function CreateAccountPage() {
       </div>
 
       <div className={styles.row}>
-        <Field>
+        <Field className={styles.phoneField}>
           <FieldLabel htmlFor="phone">Telefone*</FieldLabel>
 
           <Controller
@@ -117,11 +154,14 @@ export default function CreateAccountPage() {
               <PhoneInput
                 {...field}
                 id="phone"
-                country="BR"
+                className={styles.phoneInput}
+                defaultCountry="BR"
                 autoComplete="tel"
-                placeholder="Telefone*"
-                disabled={false}
+                placeholder=" "
+                disabled={isSubmitting}
                 inputComponent={Input}
+                countrySelectComponent={CountrySelect}
+                countrySelectProps={{ labels: pt }}
                 error={!!errors.phone?.message}
               />
             )}
@@ -138,8 +178,7 @@ export default function CreateAccountPage() {
             inputMode="email"
             autoComplete="email"
             placeholder="E-mail*"
-            isLoading={false}
-            disabled={false}
+            disabled={isSubmitting}
             error={!!errors.email?.message}
             {...register("email")}
           />
@@ -155,8 +194,7 @@ export default function CreateAccountPage() {
             id="password"
             type="password"
             placeholder="Senha*"
-            isLoading={false}
-            disabled={false}
+            disabled={isSubmitting}
             error={!!errors.password?.message}
             {...register("password")}
           />
@@ -174,8 +212,7 @@ export default function CreateAccountPage() {
             type="password"
             placeholder="Confirmar senha*"
             error={!!errors.passwordConfirmation?.message}
-            isLoading={false}
-            disabled={!password}
+            disabled={!password || isSubmitting}
             {...register("passwordConfirmation")}
           />
           <FieldError>{errors.passwordConfirmation?.message}</FieldError>
@@ -202,8 +239,8 @@ export default function CreateAccountPage() {
         type="submit"
         variant="primary"
         size="lg"
-        isLoading={false}
-        disabled={!isValid}
+        isLoading={isSubmitting}
+        disabled={!isValid || isSubmitting}
         style={{ marginTop: "16px" }}
       >
         Criar conta

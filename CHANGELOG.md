@@ -29,3 +29,14 @@
 - create structure of the create account page
 - Create mask for cpf
 - password validation in real time
+- creation of env
+- creation of skydiet api service
+- add react query configuration with [app configuration](https://tanstack.com/query/latest/docs/framework/react/examples/nextjs-app-prefetching?path=examples%2Freact%2Fnextjs-app-prefetching%2Fapp%2Flayout.tsx)
+- Creation of Providers
+- integration of back-end to create account
+- add sonner and configure
+- Create signup action
+- update phone style and select phone styles to include navigation
+- Create login with google and facebook buttons disabled for future integration
+
+- implement [data table](https://ui.shadcn.com/docs/components/radix/data-table)

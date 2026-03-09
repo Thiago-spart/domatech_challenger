@@ -3,6 +3,8 @@ import styles from "./page.module.sass";
 import Link from "next/link";
 
 import { Metadata } from "next";
+import { GoogleIcon } from "@/components/icons/GoogleIcon";
+import { FacebookIcon } from "@/components/icons/FacebookIcon";
 
 export const metadata: Metadata = {
 	title: "Entrar",
@@ -30,6 +32,17 @@ export default function LoginLayout({
 
 				<h1 className={styles.title}>Bem-vindo de volta!</h1>
 				<p className={styles.subtitle}>Entre com:</p>
+
+				<div className={styles.socialButtons}>
+					<button type="button" className={styles.socialBtn} disabled aria-label="Entrar com Google">
+						<GoogleIcon />
+						<span>Google</span>
+					</button>
+					<button type="button" className={styles.socialBtn} disabled aria-label="Entrar com Facebook">
+						<FacebookIcon />
+						<span>Facebook</span>
+					</button>
+				</div>
 
 				<div className={styles.divider}>
 					<span>ou acesse com seu e-mail:</span>
