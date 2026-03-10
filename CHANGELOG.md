@@ -25,7 +25,7 @@
 - cpf validation via zod
 - create createAccount schema
 - add number mask and validation via library
-- Error on create account page, it intends the user to log in with magic buttons but doens't allow to it
+- Error on create account page, it intends the user to log in with magic buttons but doesn't allow to it
 - create structure of the create account page
 - Create mask for cpf
 - password validation in real time
@@ -39,5 +39,7 @@
 - update phone style and select phone styles to include navigation
 - Create login with google and facebook buttons disabled for future integration
 - integrate login to back-end via next actions
+- create and configure middleware for public/private routes and safe redirect
+- prefetch login and create account page 
 
 - implement [data table](https://ui.shadcn.com/docs/components/radix/data-table)

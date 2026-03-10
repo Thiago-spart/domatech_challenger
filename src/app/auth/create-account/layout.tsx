@@ -39,7 +39,7 @@ export default function CreateAccountLayout({
 
         <div className={styles.signupText}>
           Já tem cadastro?{" "}
-          <Link href="/auth/login" className={styles.signupLink}>
+          <Link href="/auth/login" prefetch className={styles.signupLink}>
             Faça o login
           </Link>
         </div>
