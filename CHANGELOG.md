@@ -40,6 +40,13 @@
 - Create login with google and facebook buttons disabled for future integration
 - integrate login to back-end via next actions
 - create and configure middleware for public/private routes and safe redirect
-- prefetch login and create account page 
+- prefetch login and create account page
+- Create Drawer component to add patients
+- Create Dialog for desktop version of adding patients
+- Create sidebar for clients navigation
+- Create SideBar
+- Create logoff function
+- Implement sidebar on home
 
+- Migration [middleware to proxy](https://nextjs.org/docs/messages/middleware-to-proxy)
 - implement [data table](https://ui.shadcn.com/docs/components/radix/data-table)
