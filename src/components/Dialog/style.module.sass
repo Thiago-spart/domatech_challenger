@@ -1,0 +1,108 @@
+@use '../../app/variables' as vars
+
+.dialogOverlay
+  position: fixed
+  inset: 0
+  z-index: 50
+  isolation: isolate
+  background-color: rgba(0, 0, 0, 0.4)
+  transition-duration: 100ms
+
+  &[data-state="open"]
+    animation: fadeIn 0.1s ease-in-out forwards
+  &[data-state="closed"]
+    animation: fadeOut 0.1s ease-in-out forwards
+
+  @supports (backdrop-filter: blur(2px))
+    backdrop-filter: blur(2px)
+
+.dialogContent
+  position: fixed
+  top: 50%
+  left: 50%
+  z-index: 50
+  width: 100%
+  max-width: calc(100% - 2rem)
+  transform: translate(-50%, -50%)
+  display: grid
+  gap: 1rem
+  border-radius: 0.75rem
+  padding: 1rem
+  font-size: 0.875rem
+  background-color: var(--background)
+  outline: none
+  transition-duration: 100ms
+  box-shadow: 0 0 0 1px var(--gray700)
+
+  @media (min-width: 640px)
+    max-width: 24rem
+
+  &[data-state="open"]
+    animation: contentShow 0.1s ease-in-out forwards
+  &[data-state="closed"]
+    animation: contentHide 0.1s ease-in-out forwards
+
+.dialogHeader
+  display: flex
+  flex-direction: column
+  gap: 0.5rem
+
+.dialogFooter
+  display: flex
+  flex-direction: column-reverse
+  gap: 0.5rem
+  padding: 1rem
+  margin-inline: -1rem
+  margin-bottom: -1rem
+  border-bottom-left-radius: 0.75rem
+  border-bottom-right-radius: 0.75rem
+  border-top: 1px solid var(--gray700)
+  background-color: var(--gray900)
+
+  @media (min-width: 640px)
+    flex-direction: row
+    justify-content: flex-end
+
+.dialogTitle
+  font-size: 1rem
+  line-height: 1
+  font-weight: 500
+  color: var(--foreground)
+
+.dialogDescription
+  font-size: 0.875rem
+  color: var(--gray200)
+
+  a
+    text-decoration: underline
+    text-underline-offset: 3px
+    &:hover
+      color: var(--foreground)
+
+@keyframes fadeIn
+  from
+    opacity: 0
+  to
+    opacity: 1
+
+@keyframes fadeOut
+  from
+    opacity: 1
+  to
+    opacity: 0
+
+@keyframes contentShow
+  from
+    opacity: 0
+    transform: translate(-50%, -50%) scale(0.95)
+  to
+    opacity: 1
+    transform: translate(-50%, -50%) scale(1)
+
+@keyframes contentHide
+  from
+    opacity: 1
+    transform: translate(-50%, -50%) scale(1)
+  to
+    opacity: 0
+    transform: translate(-50%, -50%) scale(0.95)

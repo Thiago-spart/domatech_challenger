@@ -1,0 +1,117 @@
+@use '../../app/variables' as vars
+
+.drawerOverlay
+  position: fixed
+  inset: 0
+  z-index: 50
+  background-color: rgba(0, 0, 0, 0.4)
+
+  &[data-state="open"]
+    animation: fadeIn 0.3s ease-in-out forwards
+  &[data-state="closed"]
+    animation: fadeOut 0.3s ease-in-out forwards
+
+  @supports (backdrop-filter: blur(2px))
+    backdrop-filter: blur(2px)
+
+.drawerContent
+  position: fixed
+  z-index: 50
+  display: flex
+  flex-direction: column
+  background-color: var(--background)
+  font-size: 0.875rem
+  height: auto
+
+  &[data-vaul-drawer-direction="bottom"]
+    inset-inline: 0
+    bottom: 0
+    margin-top: 6rem
+    max-height: 80vh
+    border-top-left-radius: 0.75rem
+    border-top-right-radius: 0.75rem
+    border-top: 1px solid var(--gray700)
+
+  &[data-vaul-drawer-direction="top"]
+    inset-inline: 0
+    top: 0
+    margin-bottom: 6rem
+    max-height: 80vh
+    border-bottom-left-radius: 0.75rem
+    border-bottom-right-radius: 0.75rem
+    border-bottom: 1px solid var(--gray700)
+
+  &[data-vaul-drawer-direction="left"]
+    inset-block: 0
+    left: 0
+    width: 75%
+    border-top-right-radius: 0.75rem
+    border-bottom-right-radius: 0.75rem
+    border-right: 1px solid var(--gray700)
+    @media (min-width: 640px)
+      max-width: 24rem
+
+  &[data-vaul-drawer-direction="right"]
+    inset-block: 0
+    right: 0
+    width: 75%
+    border-top-left-radius: 0.75rem
+    border-bottom-left-radius: 0.75rem
+    border-left: 1px solid var(--gray700)
+    @media (min-width: 640px)
+      max-width: 24rem
+
+.drawerHandle
+  margin-top: 1rem
+  height: 0.25rem
+  width: 100px
+  border-radius: 9999px
+  background-color: var(--gray600)
+  margin-left: auto
+  margin-right: auto
+  flex-shrink: 0
+  display: none
+
+.drawerContent[data-vaul-drawer-direction="bottom"] .drawerHandle
+  display: block
+
+.drawerHeader
+  display: flex
+  flex-direction: column
+  gap: 0.125rem
+  padding: 1rem
+
+.drawerContent[data-vaul-drawer-direction="bottom"] .drawerHeader,
+.drawerContent[data-vaul-drawer-direction="top"] .drawerHeader
+  text-align: center
+
+  @media (min-width: 768px)
+    text-align: left
+
+.drawerFooter
+  display: flex
+  flex-direction: column
+  gap: 0.5rem
+  padding: 1rem
+  margin-top: auto
+
+.drawerTitle
+  font-size: 1rem
+  font-weight: 500
+  color: var(--foreground)
+
+.drawerDescription
+  font-size: 0.875rem
+  color: var(--gray200)
+
+@keyframes fadeIn
+  from
+    opacity: 0
+  to
+    opacity: 1
+
+@keyframes fadeOut
+  from
+    opacity: 1
+  to
+    opacity: 0
