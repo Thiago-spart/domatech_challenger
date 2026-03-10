@@ -9,8 +9,7 @@ import { Input } from "@/components/action/Input";
 import { Field, FieldError, FieldLabel } from "@/components/action/Field";
 import { loginAction } from "./actions";
 import { toast } from "sonner";
-import { redirect, RedirectType } from "next/navigation";
-
+import { useRouter } from "next/navigation";
 export default function LoginPage() {
   const {
     register,
@@ -20,9 +19,11 @@ export default function LoginPage() {
     resolver: zodResolver(loginSchema),
   });
 
+  const router = useRouter()
+
   const handleRedirectToHome = () => {
     setTimeout(() => {
-      redirect('/home', RedirectType.replace)
+      router.replace('/home')
     }, 2000);
   }
 

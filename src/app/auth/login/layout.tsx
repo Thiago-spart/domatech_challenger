@@ -52,7 +52,7 @@ export default function LoginLayout({
 
 				<div className={styles.signupText}>
 					Não possui cadastro?{' '}
-					<Link href="/auth/create-account" className={styles.signupLink}>
+					<Link href="/auth/create-account" prefetch className={styles.signupLink}>
 						Criar conta
 					</Link>
 				</div>
