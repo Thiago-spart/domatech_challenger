@@ -1,0 +1,87 @@
+.pagination
+  display: flex
+  align-items: center
+  justify-content: space-between
+  width: 100%
+  padding: 0.75rem 1rem
+  background-color: var(--background)
+  border-top: 1px solid var(--gray600)
+  border-bottom: 4px solid var(--gray800)
+
+.paginationLeft
+  display: flex
+  align-items: center
+  border: 1px solid var(--gray600)
+  border-radius: 4px
+  overflow: hidden
+
+.navButton
+  display: flex
+  align-items: center
+  justify-content: center
+  width: 2.25rem
+  height: 2.25rem
+  padding: 0
+  background: transparent
+  border: none
+  border-right: 1px solid var(--gray600)
+  color: var(--gray200)
+  cursor: pointer
+  transition: background-color 0.15s, color 0.15s
+
+  &:last-of-type
+    border-right: none
+    border-left: 1px solid var(--gray600)
+
+  &:hover:not(:disabled)
+    background-color: var(--gray800)
+    color: var(--foreground)
+
+  &:disabled
+    opacity: 0.4
+    cursor: not-allowed
+
+.chevronRight
+  transform: rotate(180deg)
+
+.pageInfo
+  min-width: 3rem
+  padding: 0 0.75rem
+  font-size: 0.875rem
+  font-weight: 500
+  color: var(--foreground)
+  text-align: center
+  border-right: 1px solid var(--gray600)
+
+.paginationRight
+  display: flex
+  align-items: center
+  gap: 0.5rem
+
+.rowsLabel
+  font-size: 0.875rem
+  color: var(--foreground)
+  white-space: nowrap
+
+.pageSizeTrigger
+  display: flex
+  align-items: center
+  gap: 0.375rem
+  min-width: 4rem
+  padding: 0.375rem 0.75rem
+  background: var(--background)
+  border: 1px solid var(--gray600)
+  border-radius: 4px
+  font-size: 0.875rem
+  font-weight: 500
+  color: var(--foreground)
+  cursor: pointer
+  transition: border-color 0.15s, background-color 0.15s
+
+  &:hover
+    background-color: var(--gray800)
+    border-color: var(--gray200)
+
+  svg
+    color: var(--gray200)
+    flex-shrink: 0

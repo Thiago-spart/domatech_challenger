@@ -58,7 +58,9 @@ export interface CreatePatientResponse {
   message: string;
 }
 
-export interface UpdatePatientParams extends Partial<CreatePatientParams> { }
+export interface UpdatePatientParams extends Partial<CreatePatientParams> {
+  active?: boolean;
+}
 
 export interface UpdatePatientResponse extends CreatePatientResponse { }
 
@@ -95,6 +97,12 @@ export interface PatientListResponse {
 
 export interface DeletePatientResponse {
   message: string;
+}
+
+export interface GetPatientsParams {
+  page?: number;
+  limit?: number;
+  search?: string;
 }
 
 export type GetPatientResponse = Omit<CreatePatientResponse, "message">;
@@ -165,7 +173,9 @@ export async function updatePatient(
   }
 }
 
-export async function getPatients(): Promise<PatientListResponse> {
+export async function getPatients(
+  params?: GetPatientsParams
+): Promise<PatientListResponse> {
   const cookieStore = await cookies();
   const token = cookieStore.get("domatechUser")?.value;
 
@@ -174,12 +184,25 @@ export async function getPatients(): Promise<PatientListResponse> {
   }
 
   try {
+    const apiParams: Record<string, string | number | undefined> = {
+      populate: "addresses.city.state",
+    };
+
+    if (params?.page != null) {
+      apiParams.page = params.page;
+    }
+    if (params?.limit != null) {
+      apiParams.limit = params.limit;
+    }
+    // API expects fullName param for searching patients by name (per Postman docs)
+    if (params?.search && params.search.trim()) {
+      apiParams.fullName = params.search.trim();
+    }
+
     const response = await skydietAPI.get<PatientListResponse>(
       "/clinical/patient",
       {
-        params: {
-          populate: "addresses.city.state",
-        },
+        params: apiParams,
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -254,24 +277,6 @@ export async function deletePatient(
     );
     throw new Error(
       error?.response?.data?.message || "Failed to delete patient",
-    );
-  }
-}
-
-export async function getAddressByZipCode(zipCode: string): Promise<any> {
-  try {
-    const response = await axios.get(
-      `https://viacep.com.br/ws/${zipCode}/json/`,
-    );
-
-    return response;
-  } catch (error: AxiosError | any) {
-    console.error(
-      `Failed to get address by zip code ${zipCode}:`,
-      error?.response?.data || error.message,
-    );
-    throw new Error(
-      error?.response?.data?.message || "Failed to get address by zip code",
     );
   }
 }

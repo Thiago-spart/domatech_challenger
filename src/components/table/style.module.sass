@@ -1,0 +1,56 @@
+.tableContainer
+  position: relative
+  width: 100%
+  overflow-x: auto
+
+.table
+  width: 100%
+  caption-side: bottom
+  font-size: 0.875rem
+  border-collapse: collapse
+
+.tableHeader
+  tr
+    border-bottom: 1px solid var(--border, #e2e8f0)
+
+.tableBody
+  tr:last-child
+    border-bottom: 0
+
+.tableFooter
+  background-color: var(--muted, #f1f5f9)
+  border-top: 1px solid var(--border, #e2e8f0)
+  font-weight: 500
+  tr:last-child
+    border-bottom: 0
+
+.tableRow
+  border-bottom: 1px solid var(--border, #e2e8f0)
+  transition: background-color 0.2s
+  &:hover
+    background-color: var(--muted, #f1f5f9)
+  &[data-state="selected"]
+    background-color: var(--muted, #f1f5f9)
+
+.tableHead
+  color: var(--foreground, #1e293b)
+  height: 2.5rem
+  padding: 0 0.5rem
+  text-align: left
+  vertical-align: middle
+  font-weight: 500
+  white-space: nowrap
+  &:has([role=checkbox])
+    padding-right: 0
+
+.tableCell
+  padding: 0.5rem
+  vertical-align: middle
+  white-space: nowrap
+  &:has([role=checkbox])
+    padding-right: 0
+
+.tableCaption
+  color: var(--muted-foreground, #64748b)
+  margin-top: 1rem
+  font-size: 0.875rem

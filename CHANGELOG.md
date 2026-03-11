@@ -47,6 +47,18 @@
 - Create SideBar
 - Create logoff function
 - Implement sidebar on home
+- back-end consuming to integrate patients list
+- creation of patientTable
+- updating table UI
+- Search users in table
+- integrate user to table
+- add pagination
+- integrate pagination to back
+- integrate search input to back and table
+- switch connected to back end to change activy users
 
+- edit user
+- delete user
+- Search user
 - Migration [middleware to proxy](https://nextjs.org/docs/messages/middleware-to-proxy)
 - implement [data table](https://ui.shadcn.com/docs/components/radix/data-table)

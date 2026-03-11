@@ -1,0 +1,51 @@
+.root
+  display: flex
+  width: 1rem
+  height: 1rem
+  align-items: center
+  justify-content: center
+  border-radius: 4px
+  border: 1px solid var(--input)
+  transition: all 0.15s ease-in-out
+  position: relative
+  flex-shrink: 0
+  outline: none
+
+  &:after
+    content: ''
+    position: absolute
+    top: -0.5rem
+    bottom: -0.5rem
+    left: -0.75rem
+    right: -0.75rem
+
+  &:disabled
+    cursor: not-allowed
+    opacity: 0.5
+
+  &[data-state='checked']
+    background-color: var(--primary)
+    color: var(--primary-foreground)
+    border-color: var(--primary)
+
+  &:focus-visible
+    border-color: var(--ring)
+    box-shadow: 0 0 0 3px rgba(var(--ring), 0.5)
+
+  &[aria-invalid='true']
+    border-color: var(--destructive)
+    box-shadow: 0 0 0 3px transparent
+    &:focus-visible
+      box-shadow: 0 0 0 3px rgba(var(--destructive), 0.2)
+    &[data-state='checked']
+      border-color: var(--primary)
+
+.indicator
+  display: grid
+  place-content: center
+  color: currentcolor
+  transition: none
+  
+  svg
+    width: 0.875rem
+    height: 0.875rem

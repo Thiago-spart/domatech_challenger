@@ -1,0 +1,55 @@
+.root
+  position: relative
+  display: inline-flex
+  flex-shrink: 0
+  cursor: pointer
+  align-items: center
+  border-radius: 9999px
+  border: 2px solid transparent
+  transition: background-color 200ms ease-in-out
+  outline: none
+  
+  &[data-size='default']
+    height: 1.5rem
+    width: 2.75rem
+  
+  &[data-size='sm']
+    height: 1rem
+    width: 1.75rem
+
+  background-color: var(--input, #e2e8f0)
+
+  &[data-state='checked']
+    background-color: #00d282
+
+  &:focus-visible
+    box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--ring)
+
+  &[data-disabled]
+    cursor: not-allowed
+    opacity: 0.5
+
+.thumb
+  pointer-events: none
+  display: block
+  border-radius: 9999px
+  background-color: #ffffff
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05)
+  transition: transform 200ms cubic-bezier(0.4, 0, 0.2, 1)
+
+  [data-size='default'] > &
+    height: 1.25rem
+    width: 1.25rem
+
+  [data-size='sm'] > &
+    height: 0.75rem
+    width: 0.75rem
+
+  &[data-state='unchecked']
+    transform: translateX(0)
+
+  [data-size='default'] > &[data-state='checked']
+    transform: translateX(1.25rem) 
+
+  [data-size='sm'] > &[data-state='checked']
+    transform: translateX(0.75rem)
