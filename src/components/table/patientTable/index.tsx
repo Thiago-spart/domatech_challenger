@@ -139,7 +139,7 @@ export function DataTable<TData, TValue>({
 						)}
 					</TableBody>
 				</Table>
-				<DataTablePagination table={table} />
+				<DataTablePagination table={table} pageSize={isServerSide ? pageSize : undefined} />
 			</div>
 		</div>
 	)
