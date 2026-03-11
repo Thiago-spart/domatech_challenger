@@ -33,6 +33,7 @@ export interface CreatePatientParams {
   socialId?: string;
   tags?: string[];
   addresses?: CreatePatientAddress[];
+  email?: string;
 }
 
 export interface PatientPhoneResponse extends CreatePatientPhone {

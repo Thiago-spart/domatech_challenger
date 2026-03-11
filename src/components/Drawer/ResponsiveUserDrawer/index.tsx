@@ -1,5 +1,3 @@
-"use client";
-
 import * as React from "react";
 import { Button } from "@/components/action/Button";
 import { Input } from "@/components/action/Input";
@@ -104,7 +102,7 @@ function mapPatientToFormValues(patient: PatientWithAddresses): Record<string, u
 
   return {
     fullName: patient.fullName ?? "",
-    genre: (patient.genre === "MALE" || patient.genre === "FEMALE" ? patient.genre : "MALE") as "MALE" | "FEMALE",
+    genre: (patient.genre === "MALE" || patient.genre === "FEMALE" ? patient.genre : "") as "MALE" | "FEMALE" | "",
     bornDate: bornDateStr,
     phone: phoneValue ?? "",
     email: patient.email ?? "",
@@ -160,8 +158,8 @@ export function ResponsiveUserDrawer({
       socialId: "",
       tags: "",
       addresses: undefined,
-    },
-  });
+    } as any,
+  }) as any;
 
   React.useEffect(() => {
     if (!open) return;
@@ -178,7 +176,7 @@ export function ResponsiveUserDrawer({
         socialId: "",
         tags: "",
         addresses: undefined,
-      });
+      } as any);
     }
   }, [open, patientData, patientToEdit, reset]);
 
@@ -200,7 +198,7 @@ export function ResponsiveUserDrawer({
     fetchZipCode(cleanedZip);
   };
 
-  const onSubmit = async (data: PatientSchema) => {
+  const onSubmit = async (data: any) => {
     try {
       const formattedData: CreatePatientParams = {
         fullName: data.fullName,

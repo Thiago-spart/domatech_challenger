@@ -56,8 +56,8 @@ export const patientSchema = z.object({
   phone: z
     .string({ message: "Telefone obrigatório" })
     .refine(val => isValidPhoneNumber(val), "Telefone inválido"),
-  genre: z.enum(["MALE", "FEMALE"], "Gênero obrigatório"),
-  bornDate: z.coerce.date("Data de nascimento inválida"),
+  genre: z.enum(["MALE", "FEMALE", ""]).refine(val => val !== "", "Gênero obrigatório"),
+  bornDate: z.string().min(1, "Data de nascimento obrigatória").refine(val => !isNaN(Date.parse(val)), "Data de nascimento inválida"),
   socialId: z
     .string()
     .refine(validateDocument, "Documento (CPF ou CNPJ) inválido")
