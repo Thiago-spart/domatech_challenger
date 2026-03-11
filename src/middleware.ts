@@ -4,6 +4,10 @@ import type { NextRequest } from 'next/server'
 export function middleware(request: NextRequest) {
 	const token = request.cookies.get('domatechUser')
 
+	if(request.nextUrl.pathname === '/') {
+		return NextResponse.redirect(new URL('/home', request.url))
+	} 
+
 	if (request.nextUrl.pathname.startsWith('/home') && !token) {
 		return NextResponse.redirect(new URL('/auth/login', request.url))
 	}

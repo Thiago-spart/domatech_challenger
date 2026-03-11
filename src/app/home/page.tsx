@@ -8,14 +8,16 @@ import { Input } from "@/components/action/Input";
 import { ResponsiveUserDrawer } from "@/components/Drawer/ResponsiveUserDrawer";
 import { UserPlus } from "lucide-react";
 import { DataTable } from "@/components/table/patientTable";
-import { columns } from "@/components/table/patientTable/columns";
+import { createColumns } from "@/components/table/patientTable/columns";
 import { useQuery } from "@tanstack/react-query";
 import { getPatients } from "./actions";
+import type { PatientListResponseItem } from "./actions";
 
 const SEARCH_DEBOUNCE_MS = 400;
 
 export default function Page() {
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+	const [patientToEdit, setPatientToEdit] = useState<PatientListResponseItem | null>(null);
 	const [page, setPage] = useState(1);
 	const [pageSize, setPageSize] = useState(10);
 	const [searchInput, setSearchInput] = useState("");
@@ -55,7 +57,7 @@ export default function Page() {
 						/>
 					</Field>
 
-					<Button className={styles.addButton} variant="primary" size="md" onClick={() => setIsDrawerOpen(true)}>
+					<Button className={styles.addButton} variant="primary" size="md" onClick={() => { setPatientToEdit(null); setIsDrawerOpen(true); }}>
 						<span className={styles.addIcon}>
 							<UserPlus size={24} strokeWidth={2} />
 						</span>
@@ -66,7 +68,10 @@ export default function Page() {
 
 			<main className={styles.content}>
 				<DataTable
-					columns={columns}
+					columns={createColumns((patient) => {
+						setPatientToEdit(patient);
+						setIsDrawerOpen(true);
+					})}
 					data={patientsData?.items || []}
 					pageCount={Math.max(1, patientsData?.paging?.totalPages ?? 1)}
 					pageIndex={page - 1}
@@ -79,7 +84,15 @@ export default function Page() {
 				/>
 			</main>
 
-			<ResponsiveUserDrawer open={isDrawerOpen} setOpen={setIsDrawerOpen} />
+			<ResponsiveUserDrawer
+				open={isDrawerOpen}
+				setOpen={(open) => {
+					setIsDrawerOpen(open);
+					if (!open) setPatientToEdit(null);
+				}}
+				patientToEdit={patientToEdit}
+				onEditComplete={() => setPatientToEdit(null)}
+			/>
 		</div>
 	);
 }
