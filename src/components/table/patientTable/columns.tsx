@@ -31,37 +31,56 @@ function StatusCell({ patient }: { patient: PatientListResponseItem }) {
 	)
 }
 
-export const columns: ColumnDef<PatientListResponseItem>[] = [
-	{
-		accessorKey: "fullName",
-		header: ({ column }) => (
-			<DataTableColumnHeader column={column} title="Paciente" />
-		),
-		cell: ({ row }) => {
-			const name = row.getValue("fullName") as string;
-			return (
-				<div className={styles.authorCell}>
-					<div className={styles.avatar}>
-						<Image
-							src={`https://api.dicebear.com/7.x/notionists/svg?seed=${name}&backgroundColor=e2e8f0`}
-							alt={name}
-							width={40}
-							height={40}
-							unoptimized
-							className={styles.avatarImage}
-						/>
+export function createColumns(
+	onPatientClick?: (patient: PatientListResponseItem) => void
+): ColumnDef<PatientListResponseItem>[] {
+	return [
+		{
+			accessorKey: "fullName",
+			header: ({ column }) => (
+				<DataTableColumnHeader column={column} title="Paciente" />
+			),
+			cell: ({ row }) => {
+				const name = row.getValue("fullName") as string
+				const patient = row.original
+				const content = (
+					<>
+						<div className={styles.avatar}>
+							<Image
+								src={`https://api.dicebear.com/7.x/notionists/svg?seed=${name}&backgroundColor=e2e8f0`}
+								alt={name}
+								width={40}
+								height={40}
+								unoptimized
+								className={styles.avatarImage}
+							/>
+						</div>
+						<span className={styles.authorName}>{name}</span>
+					</>
+				)
+				return (
+					<div className={styles.authorCell}>
+						{onPatientClick ? (
+							<button
+								type="button"
+								className={styles.patientNameButton}
+								onClick={() => onPatientClick(patient)}
+							>
+								{content}
+							</button>
+						) : (
+							content
+						)}
 					</div>
-					<span className={styles.authorName}>{name}</span>
-				</div>
-			)
-		}
-	},
-	{
-		accessorKey: "updatedAtDateTime",
-		header: ({ column }) => (
-			<DataTableColumnHeader column={column} title="Última Interação" />
-		),
-		cell: ({ row }) => {
+				)
+			}
+		},
+		{
+			accessorKey: "updatedAtDateTime",
+			header: ({ column }) => (
+				<DataTableColumnHeader column={column} title="Última Interação" />
+			),
+			cell: ({ row }) => {
 			const dateValue = row.getValue("updatedAtDateTime") as string;
 			let formatted = "-";
 			if (dateValue) {
@@ -72,15 +91,15 @@ export const columns: ColumnDef<PatientListResponseItem>[] = [
 				}).format(new Date(dateValue));
 			}
 
-			return <div className={styles.dateCell}>{formatted}</div>
+					return <div className={styles.dateCell}>{formatted}</div>
+			},
 		},
-	},
-	{
-		accessorKey: "tags",
-		header: ({ column }) => (
-			<DataTableColumnHeader column={column} title="Tag" />
-		),
-		cell: ({ row }) => {
+		{
+			accessorKey: "tags",
+			header: ({ column }) => (
+				<DataTableColumnHeader column={column} title="Tag" />
+			),
+			cell: ({ row }) => {
 			const tags = row.getValue("tags") as string[] | undefined;
 			const tag = (tags && tags.length > 0) ? tags[0] : "Prioridade";
 			return (
@@ -90,13 +109,16 @@ export const columns: ColumnDef<PatientListResponseItem>[] = [
 					</span>
 				</div>
 			)
+			},
 		},
-	},
-	{
-		accessorKey: "active",
-		header: ({ column }) => (
-			<DataTableColumnHeader column={column} title="Status" />
-		),
-		cell: ({ row }) => <StatusCell patient={row.original} />,
-	},
-]
+		{
+			accessorKey: "active",
+			header: ({ column }) => (
+				<DataTableColumnHeader column={column} title="Status" />
+			),
+			cell: ({ row }) => <StatusCell patient={row.original} />,
+		},
+	]
+}
+
+export const columns = createColumns()

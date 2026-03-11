@@ -22,14 +22,24 @@ import { Field, FieldError, FieldLabel } from "@/components/action/Field";
 import Select from "@/components/action/Select";
 import CountrySelect from "@/components/action/CountrySelect";
 import pt from "react-phone-number-input/locale/pt.json";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { createPatient, CreatePatientParams, CreatePatientResponse } from "@/app/home/actions";
+import {
+  createPatient,
+  updatePatient,
+  getPatientById,
+  CreatePatientParams,
+  GetPatientResponse,
+  PatientListResponseItem,
+} from "@/app/home/actions";
 import { toast } from "sonner";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface ResponsiveUserDrawerProps {
   open: boolean;
   setOpen: (open: boolean) => void;
+  patientToEdit?: PatientListResponseItem | null;
+  onEditComplete?: () => void;
 }
 
 const genreOptions = [
@@ -62,12 +72,74 @@ const fetchZipCodeData = async (zipCode: string): Promise<ZipCodeData> => {
   return response.data;
 };
 
+type PatientWithAddresses = GetPatientResponse & {
+  addresses?: Array<{
+    zipCode?: string;
+    street?: string;
+    number?: string;
+    complement?: string;
+    neighborhood?: string;
+    city?: string | { _id?: string; name?: string };
+    cityCodeIbge?: string;
+    code?: string;
+  }>;
+};
+
+function mapPatientToFormValues(patient: PatientWithAddresses): Record<string, unknown> {
+  const firstPhone = patient.phones?.[0];
+  const phoneValue =
+    firstPhone && typeof firstPhone === "object" && "countryCode" in firstPhone && "number" in firstPhone
+      ? `${firstPhone.countryCode}${firstPhone.number}`
+      : undefined;
+
+  const firstAddress = patient.addresses?.[0];
+  const addr = firstAddress && typeof firstAddress === "object" ? firstAddress : undefined;
+  const cityName = addr?.city && typeof addr.city === "object" && addr.city !== null && "name" in addr
+    ? (addr.city as { name?: string }).name
+    : typeof addr?.city === "string"
+      ? addr.city
+      : "";
+
+  const bornDateStr = patient.bornDate ? new Date(patient.bornDate).toISOString().slice(0, 10) : "";
+
+  return {
+    fullName: patient.fullName ?? "",
+    genre: (patient.genre === "MALE" || patient.genre === "FEMALE" ? patient.genre : "MALE") as "MALE" | "FEMALE",
+    bornDate: bornDateStr,
+    phone: phoneValue ?? "",
+    email: patient.email ?? "",
+    socialId: patient.socialId ?? "",
+    tags: Array.isArray(patient.tags) ? patient.tags[0] ?? "" : "",
+    addresses: addr
+      ? {
+          zipCode: addr.zipCode ? `${addr.zipCode.slice(0, 5)}-${addr.zipCode.slice(5)}` : "",
+          street: addr.street ?? "",
+          number: addr.number ?? "",
+          complement: addr.complement ?? "",
+          neighborhood: addr.neighborhood ?? "",
+          city: cityName,
+          cityCodeIbge: String(addr.cityCodeIbge ?? (addr as Record<string, unknown>).code ?? ""),
+        }
+      : undefined,
+  };
+}
+
 export function ResponsiveUserDrawer({
   open,
   setOpen,
+  patientToEdit = null,
+  onEditComplete,
 }: ResponsiveUserDrawerProps) {
   const isDesktop = useMediaQuery("(min-width: 768px)");
+  const queryClient = useQueryClient();
   const [tab, setTab] = React.useState<"basic" | "others">("basic");
+  const isEditMode = !!patientToEdit;
+
+  const { data: patientData } = useQuery({
+    queryKey: ["patient", patientToEdit?._id],
+    queryFn: () => getPatientById(patientToEdit!._id),
+    enabled: !!patientToEdit?._id && open,
+  });
 
   const {
     register,
@@ -76,13 +148,39 @@ export function ResponsiveUserDrawer({
     setValue,
     control,
     formState: { errors, isSubmitting },
-  } = useForm({
+  } = useForm<PatientSchema>({
     resolver: zodResolver(patientSchema),
     mode: "onChange",
     defaultValues: {
-      tags: 'test'
-    }
+      fullName: "",
+      genre: "",
+      bornDate: "",
+      phone: "",
+      email: "",
+      socialId: "",
+      tags: "",
+      addresses: undefined,
+    },
   });
+
+  React.useEffect(() => {
+    if (!open) return;
+    if (patientData) {
+      const values = mapPatientToFormValues(patientData as PatientWithAddresses);
+      reset(values);
+    } else if (!patientToEdit) {
+      reset({
+        fullName: "",
+        genre: "",
+        bornDate: "",
+        phone: "",
+        email: "",
+        socialId: "",
+        tags: "",
+        addresses: undefined,
+      });
+    }
+  }, [open, patientData, patientToEdit, reset]);
 
   const { mutate: fetchZipCode } = useMutation({
     mutationFn: fetchZipCodeData,
@@ -104,38 +202,57 @@ export function ResponsiveUserDrawer({
 
   const onSubmit = async (data: PatientSchema) => {
     try {
-      const formattedData: any = {
+      const formattedData: CreatePatientParams = {
         fullName: data.fullName,
         genre: data.genre,
         bornDate: data.bornDate,
         phones: data.phone ? [
           {
+            description: "Pessoal",
             countryCode: data.phone.startsWith("+") ? data.phone.substring(0, 3) : "+55",
             number: data.phone.startsWith("+") ? data.phone.substring(3).replace(/\D/g, "") : data.phone.replace(/\D/g, ""),
+            active: true,
+            isWhatsapp: true,
           }
         ] : [],
         socialId: data.socialId || undefined,
+        tags: data.tags ? [data.tags] : undefined,
         email: data.email || undefined,
         addresses: data?.addresses?.zipCode ? [
           {
+            description: "Principal",
             zipCode: data.addresses.zipCode.replace(/\D/g, ""),
-            city: "673f8c5da9dc088d776a2b4d", // NOTE: Needs proper ObjectId mapping. Temporarily hardcoded for the test based on provided example.
-            code: data.addresses.cityCodeIbge || "",
-            neighborhood: data.addresses.neighborhood || "",
             street: data.addresses.street || "",
             number: data.addresses.number || "S/N",
             complement: data.addresses.complement || "",
+            neighborhood: data.addresses.neighborhood || "",
+            typeNeighborhood: "URBANO",
+            typeStreet: "RUA",
+            city: "673f8c5da9dc088d776a2b4d", // NOTE: Needs proper ObjectId mapping. Temporarily hardcoded for the test based on provided example.
+            cityCodeIbge: data.addresses.cityCodeIbge || "",
           }
-        ] : [],
+        ] : undefined,
       };
 
-      await createPatient(formattedData);
+      if (isEditMode && patientToEdit) {
+        await updatePatient(patientToEdit._id, formattedData);
+        toast.success("Paciente atualizado com sucesso!");
+        queryClient.invalidateQueries({ queryKey: ["patients"] });
+        onEditComplete?.();
+      } else {
+        await createPatient(formattedData);
+        toast.success("Paciente cadastrado com sucesso!");
+        queryClient.invalidateQueries({ queryKey: ["patients"] });
+      }
 
-      toast.success("Paciente cadastrado com sucesso!");
       setOpen(false);
       reset();
     } catch (error) {
-      toast.error("Erro ao cadastrar paciente, tente mais tarde novamente.");
+      toast.error(
+        isEditMode
+          ? "Erro ao atualizar paciente, tente mais tarde novamente."
+          : "Erro ao cadastrar paciente, tente mais tarde novamente."
+      );
     }
   };
 
@@ -345,13 +462,24 @@ export function ResponsiveUserDrawer({
         />
         <FieldError>{errors.addresses?.number?.message}</FieldError>
       </Field>
+      <Field>
+        <FieldLabel htmlFor="complement">Complemento</FieldLabel>
+        <Input
+          id="complement"
+          placeholder="Apto, bloco, etc."
+          disabled={isSubmitting}
+          error={!!errors.addresses?.complement?.message}
+          {...register("addresses.complement")}
+        />
+        <FieldError>{errors.addresses?.complement?.message}</FieldError>
+      </Field>
     </div>
   );
 
   const headerContent = (
     <div className={styles.drawerTopHeader}>
       <DialogTitle className={styles.headerTitle}>
-        Adicionar paciente
+        {isEditMode ? "Editar paciente" : "Adicionar paciente"}
       </DialogTitle>
       {isDesktop ? (
         <DialogClose asChild>
@@ -396,7 +524,7 @@ export function ResponsiveUserDrawer({
               disabled={isSubmitting}
               isLoading={isSubmitting}
             >
-              Cadastrar paciente
+              {isEditMode ? "Salvar alterações" : "Cadastrar paciente"}
             </Button>
           </div>
         </DialogContent>
@@ -425,7 +553,7 @@ export function ResponsiveUserDrawer({
             disabled={isSubmitting}
             isLoading={isSubmitting}
           >
-            Cadastrar paciente
+            {isEditMode ? "Salvar alterações" : "Cadastrar paciente"}
           </Button>
         </div>
       </DrawerContent>
