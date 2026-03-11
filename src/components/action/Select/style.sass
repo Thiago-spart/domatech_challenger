@@ -1,12 +1,12 @@
-.input-wrapper
+.select-wrapper
   position: relative
   display: flex
   align-items: center
 
-.input
+.select
   width: 100%
   height: 48px
-  padding: 0 16px
+  padding: 0 40px 0 16px
   border: 1px solid #D6E8F7
   border-radius: 4px
   background: transparent
@@ -16,10 +16,10 @@
   outline: none
   transition: all 0.2s ease
   font-family: inherit
-
-  &::placeholder
-    color: transparent
-    opacity: 0
+  appearance: none
+  -webkit-appearance: none
+  -moz-appearance: none
+  cursor: pointer
 
   &:focus
     border-color: var(--primary600)
@@ -38,33 +38,27 @@
     &:focus
       box-shadow: 0 0 0 1px var(--error600)
 
-  &--password
-    padding-right: 48px
+  option
+    background: var(--gray900)
+    color: var(--gray0)
+    padding: 10px 16px
 
-.input-icon-btn
+.select-icon-wrapper
   position: absolute
   right: 12px
   top: 50%
   transform: translateY(-50%)
-  background: none
-  border: none
-  cursor: pointer
-  color: var(--gray200)
+  pointer-events: none
   display: flex
   align-items: center
   justify-content: center
-  padding: 4px
-  transition: color 0.2s
-  border-radius: 4px
-  outline: none
+  color: var(--gray200)
+  
+  svg
+    width: 20px
+    height: 20px
 
-  &:hover
-    color: var(--foreground)
-    
-  &:focus-visible
-    box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--primary600)
-
-.input-loader-wrapper
+.select-loader-wrapper
   position: absolute
   right: 16px
   top: 50%
@@ -74,44 +68,16 @@
   justify-content: center
   pointer-events: none
 
-.input-loader
+.select-loader
   width: 16px
   height: 16px
   border: 2px solid var(--primary600)
   border-bottom-color: transparent
   border-radius: 50%
-  animation: input-rotation 1s linear infinite
+  animation: select-rotation 1s linear infinite
 
-@keyframes input-rotation
+@keyframes select-rotation
   0%
     transform: rotate(0deg)
   100%
     transform: rotate(360deg)
-
-.input--search
-  background-color: #FFFFFF
-  height: 2.5rem
-  padding-left: 1rem
-  padding-right: 3rem
-  border: 1px solid var(--gray300)
-  border-radius: 0.5rem
-  font-size: 0.875rem
-  color: #000000
-
-  &::placeholder
-    color: var(--gray400)
-    opacity: 1
-
-  &:focus
-    border-color: var(--primary600)
-    box-shadow: none
-
-.input-icon-search
-  position: absolute
-  right: 0.75rem
-  top: 50%
-  transform: translateY(-50%)
-  width: 18px
-  height: 18px
-  color: #000000
-  pointer-events: none

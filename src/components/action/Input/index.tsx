@@ -1,6 +1,8 @@
 "use client"
 
 import * as React from "react"
+import { Search } from "lucide-react"
+import { cn } from "@/utils/cn"
 import "./style.sass"
 
 export interface InputProps extends React.ComponentProps<"input"> {
@@ -12,18 +14,20 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 	({ className = "", type = "text", isLoading = false, error = false, ...props }, ref) => {
 		const [showPassword, setShowPassword] = React.useState(false)
 		const isPasswordType = type === "password"
+		const isSearchType = type === "search"
 
 		const currentType = isPasswordType
 			? (showPassword ? "text" : "password")
 			: type
 
-		const inputClasses = [
+		const inputClasses = cn(
 			"input",
-			isLoading ? "input--loading" : "",
-			error ? "input--error" : "",
-			isPasswordType ? "input--password" : "",
-			className
-		].filter(Boolean).join(" ")
+			isLoading && "input--loading",
+			error && "input--error",
+			isPasswordType && "input--password",
+			isSearchType && "input--search",
+			className,
+		)
 
 		return (
 			<div className="input-wrapper">
@@ -62,6 +66,10 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 							</svg>
 						)}
 					</button>
+				)}
+
+				{isSearchType && !isLoading && (
+					<Search className="input-icon-search" strokeWidth={1.5} />
 				)}
 			</div>
 		)

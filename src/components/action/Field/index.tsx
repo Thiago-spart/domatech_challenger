@@ -3,13 +3,14 @@
 import { useMemo } from "react"
 import { Label } from "@/components/Label"
 import { Separator } from "@/components/Separator"
+import { cn } from "@/utils/cn"
 import "./style.sass"
 
 function FieldSet({ className = "", ...props }: React.ComponentProps<"fieldset">) {
 	return (
 		<fieldset
 			data-slot="field-set"
-			className={`field-set ${className}`.trim()}
+			className={cn("field-set", className)}
 			{...props}
 		/>
 	)
@@ -24,7 +25,7 @@ function FieldLegend({
 		<legend
 			data-slot="field-legend"
 			data-variant={variant}
-			className={`field-legend field-legend--${variant} ${className}`.trim()}
+			className={cn("field-legend", `field-legend--${variant}`, className)}
 			{...props}
 		/>
 	)
@@ -34,7 +35,7 @@ function FieldGroup({ className = "", ...props }: React.ComponentProps<"div">) {
 	return (
 		<div
 			data-slot="field-group"
-			className={`field-group ${className}`.trim()}
+			className={cn("field-group", className)}
 			{...props}
 		/>
 	)
@@ -50,7 +51,7 @@ function Field({
 			role="group"
 			data-slot="field"
 			data-orientation={orientation}
-			className={`field field--${orientation} ${className}`.trim()}
+			className={cn("field", `field--${orientation}`, className)}
 			{...props}
 		/>
 	)
@@ -60,7 +61,7 @@ function FieldContent({ className = "", ...props }: React.ComponentProps<"div">)
 	return (
 		<div
 			data-slot="field-content"
-			className={`field-content ${className}`.trim()}
+			className={cn("field-content", className)}
 			{...props}
 		/>
 	)
@@ -73,7 +74,7 @@ function FieldLabel({
 	return (
 		<Label
 			data-slot="field-label"
-			className={`field-label ${className}`.trim()}
+			className={cn("field-label", className)}
 			{...props}
 		/>
 	)
@@ -83,7 +84,7 @@ function FieldTitle({ className = "", ...props }: React.ComponentProps<"div">) {
 	return (
 		<div
 			data-slot="field-label"
-			className={`field-title ${className}`.trim()}
+			className={cn("field-title", className)}
 			{...props}
 		/>
 	)
@@ -93,7 +94,7 @@ function FieldDescription({ className = "", ...props }: React.ComponentProps<"p"
 	return (
 		<p
 			data-slot="field-description"
-			className={`field-description ${className}`.trim()}
+			className={cn("field-description", className)}
 			{...props}
 		/>
 	)
@@ -110,7 +111,7 @@ function FieldSeparator({
 		<div
 			data-slot="field-separator"
 			data-content={!!children}
-			className={`field-separator ${className}`.trim()}
+			className={cn("field-separator", className)}
 			{...props}
 		>
 			<Separator className="field-separator__line" />
@@ -163,7 +164,7 @@ function FieldError({
 		<div
 			role="alert"
 			data-slot="field-error"
-			className={`field-error ${className}`.trim()}
+			className={cn("field-error", className)}
 			{...props}
 		>
 			{content}
