@@ -1,6 +1,8 @@
 .button
   display: inline-flex
   align-items: center
+  text-align: center
+  
   justify-content: center
   font-weight: 500
   border-radius: 4px
@@ -9,7 +11,6 @@
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1)
   font-family: inherit
   position: relative
-  overflow: hidden
   outline: none
 
   &:focus-visible
@@ -19,40 +20,52 @@
     opacity: 0.6
     cursor: not-allowed
 
+  &--fullWidth
+    width: 100%
+
   // Sizes
   &--sm
-    height: 40px
-    padding: 0 16px
-    font-size: 14px
+    padding: 8px 24px
+    // padding: 4px 10px
+    font-size: 0.8125rem
 
   &--md
-    height: 40px
-    padding: 0 24px
-    font-size: 14px
+    padding: 8px 24px
+    font-size: 0.875rem
+    letter-spacing: 0.02857em
+    line-height: 1.75
 
   &--lg
-    height: 56px
-    padding: 0 32px
-    font-size: 18px
+    padding: 8px 24px
+    // padding: 8px 22px
+    font-size: 0.9375rem
 
   // Variants
   &--primary
     background: var(--primary600)
-    color: var(--gray0)
+    color: #1A2026
+    box-shadow: 0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)
+    transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms
 
     &:hover:not(:disabled)
       background: var(--primary300)
-      transform: translateY(-1px)
+      box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12)
     
     &:active:not(:disabled)
-      transform: translateY(0)
+      box-shadow: 0px 5px 5px -3px rgba(0,0,0,0.2), 0px 8px 10px 1px rgba(0,0,0,0.14), 0px 3px 14px 2px rgba(0,0,0,0.12)
 
   &--secondary
     background: var(--gray800)
     color: var(--gray0)
+    box-shadow: 0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)
+    transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms, color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms
 
     &:hover:not(:disabled)
       background: var(--gray600)
+      box-shadow: 0px 2px 4px -1px rgba(0,0,0,0.2), 0px 4px 5px 0px rgba(0,0,0,0.14), 0px 1px 10px 0px rgba(0,0,0,0.12)
+    
+    &:active:not(:disabled)
+      box-shadow: 0px 5px 5px -3px rgba(0,0,0,0.2), 0px 8px 10px 1px rgba(0,0,0,0.14), 0px 3px 14px 2px rgba(0,0,0,0.12)
   
   &--outline
     background: transparent
@@ -86,6 +99,9 @@
   border-radius: 50%
   display: inline-block
   animation: button-rotation 1s linear infinite
+
+.button__text
+  white-space: nowrap
 
 @keyframes button-rotation
   0%

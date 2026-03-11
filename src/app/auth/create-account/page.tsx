@@ -104,6 +104,7 @@ export default function CreateAccountPage() {
     { label: "1 letra maiúscula", valid: /[A-Z]/.test(password) },
     { label: "1 número", valid: /[0-9]/.test(password) },
     { label: "1 caractere especial", valid: /[^A-Za-z0-9]/.test(password) },
+    { label: "Mínimo 8 caracteres", valid: password.length >= 8 },
   ];
 
   return (
