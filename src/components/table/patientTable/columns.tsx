@@ -2,6 +2,7 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { Trash2 } from "lucide-react"
 import { DataTableColumnHeader } from "./dataTableColumnHeader"
 import { PatientListResponseItem, updatePatient } from "@/app/home/actions"
 import styles from "./columns.module.sass"
@@ -32,7 +33,8 @@ function StatusCell({ patient }: { patient: PatientListResponseItem }) {
 }
 
 export function createColumns(
-	onPatientClick?: (patient: PatientListResponseItem) => void
+	onPatientClick?: (patient: PatientListResponseItem) => void,
+	onDeleteClick?: (patient: PatientListResponseItem) => void
 ): ColumnDef<PatientListResponseItem>[] {
 	return [
 		{
@@ -118,6 +120,27 @@ export function createColumns(
 			),
 			cell: ({ row }) => <StatusCell patient={row.original} />,
 		},
+		...(onDeleteClick
+			? [
+					{
+						id: "actions",
+						header: () => <span>Ações</span>,
+						cell: ({ row }) => (
+							<button
+								type="button"
+								className={styles.deleteButton}
+								onClick={(e) => {
+									e.stopPropagation()
+									onDeleteClick(row.original)
+								}}
+								aria-label="Excluir paciente"
+							>
+								<Trash2 size={18} />
+							</button>
+						),
+					} as ColumnDef<PatientListResponseItem>,
+				]
+			: []),
 	]
 }
 

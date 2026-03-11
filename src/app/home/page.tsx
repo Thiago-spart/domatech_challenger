@@ -6,18 +6,23 @@ import styles from "./page.module.sass";
 import { Field, FieldLabel } from "@/components/action/Field";
 import { Input } from "@/components/action/Input";
 import { ResponsiveUserDrawer } from "@/components/Drawer/ResponsiveUserDrawer";
+import { DeletePatientDialog } from "@/components/Dialog/DeletePatientDialog";
 import { UserPlus } from "lucide-react";
 import { DataTable } from "@/components/table/patientTable";
 import { createColumns } from "@/components/table/patientTable/columns";
-import { useQuery } from "@tanstack/react-query";
-import { getPatients } from "./actions";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { getPatients, deletePatient } from "./actions";
 import type { PatientListResponseItem } from "./actions";
+import { toast } from "sonner";
 
 const SEARCH_DEBOUNCE_MS = 400;
 
 export default function Page() {
+	const queryClient = useQueryClient();
 	const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 	const [patientToEdit, setPatientToEdit] = useState<PatientListResponseItem | null>(null);
+	const [patientToDelete, setPatientToDelete] = useState<PatientListResponseItem | null>(null);
+	const [isDeleting, setIsDeleting] = useState(false);
 	const [page, setPage] = useState(1);
 	const [pageSize, setPageSize] = useState(10);
 	const [searchInput, setSearchInput] = useState("");
@@ -39,6 +44,21 @@ export default function Page() {
 	const handleSearchChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
 		setSearchInput(event.target.value);
 	}, []);
+
+	const handleConfirmDelete = useCallback(async () => {
+		if (!patientToDelete) return;
+		setIsDeleting(true);
+		try {
+			await deletePatient(patientToDelete._id);
+			toast.success("Paciente excluído com sucesso!");
+			queryClient.invalidateQueries({ queryKey: ["patients"] });
+			setPatientToDelete(null);
+		} catch {
+			toast.error("Erro ao excluir paciente, tente novamente.");
+		} finally {
+			setIsDeleting(false);
+		}
+	}, [patientToDelete, queryClient]);
 
 	return (
 		<div className={styles.container}>
@@ -68,10 +88,13 @@ export default function Page() {
 
 			<main className={styles.content}>
 				<DataTable
-					columns={createColumns((patient) => {
-						setPatientToEdit(patient);
-						setIsDrawerOpen(true);
-					})}
+					columns={createColumns(
+						(patient) => {
+							setPatientToEdit(patient);
+							setIsDrawerOpen(true);
+						},
+						(patient) => setPatientToDelete(patient)
+					)}
 					data={patientsData?.items || []}
 					pageCount={Math.max(1, patientsData?.paging?.totalPages ?? 1)}
 					pageIndex={page - 1}
@@ -92,6 +115,14 @@ export default function Page() {
 				}}
 				patientToEdit={patientToEdit}
 				onEditComplete={() => setPatientToEdit(null)}
+			/>
+
+			<DeletePatientDialog
+				open={!!patientToDelete}
+				onOpenChange={(open) => !open && setPatientToDelete(null)}
+				patient={patientToDelete}
+				onConfirm={handleConfirmDelete}
+				isDeleting={isDeleting}
 			/>
 		</div>
 	);

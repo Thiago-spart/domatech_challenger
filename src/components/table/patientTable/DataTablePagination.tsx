@@ -16,13 +16,16 @@ const PAGE_SIZES = [10, 20, 25, 30, 40, 50]
 
 interface DataTablePaginationProps<TData> {
 	table: Table<TData>
+	pageSize?: number
 }
 
 export function DataTablePagination<TData>({
 	table,
+	pageSize: pageSizeProp,
 }: DataTablePaginationProps<TData>) {
-	const pageIndex = table.getState().pagination.pageIndex
-	const pageSize = table.getState().pagination.pageSize
+	const tableState = table.getState().pagination
+	const pageIndex = tableState.pageIndex
+	const pageSize = pageSizeProp ?? tableState.pageSize
 	const pageCount = table.getPageCount()
 
 	return (
