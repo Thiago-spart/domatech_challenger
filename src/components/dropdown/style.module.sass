@@ -1,0 +1,100 @@
+$dropdown-bg: #F0F5F9
+$dropdown-item-hover: #E8F4FD
+$dropdown-text: #1e293b
+$dropdown-shadow: 0 10px 25px -5px rgb(0 0 0 / 0.08), 0 4px 10px -4px rgb(0 0 0 / 0.06)
+
+.content
+  background-color: $dropdown-bg
+  color: $dropdown-text
+  min-width: 8rem
+  border-radius: 0.75rem
+  padding: 0.5rem
+  box-shadow: $dropdown-shadow
+  z-index: 50
+  transform-origin: var(--radix-dropdown-menu-content-transform-origin)
+  max-height: var(--radix-dropdown-menu-content-available-height)
+  width: var(--radix-dropdown-menu-trigger-width)
+  overflow-x: hidden
+  overflow-y: auto
+  animation-duration: 100ms
+
+  &[data-state='closed']
+    overflow: hidden
+
+.item, .checkboxItem, .radioItem, .subTrigger
+  position: relative
+  display: flex
+  cursor: pointer
+  user-select: none
+  align-items: center
+  gap: 0.5rem
+  border-radius: 0.5rem
+  padding: 0.5rem 0.75rem
+  font-size: 0.875rem
+  outline: none
+  transition: all 0.15s ease-in-out
+
+  &:focus, &[data-state="open"], &:hover
+    background-color: $dropdown-item-hover
+    color: $dropdown-text
+    
+  &[data-disabled]
+    pointer-events: none
+    opacity: 0.5
+
+  svg
+    width: 1rem
+    height: 1rem
+    flex-shrink: 0
+
+  &[data-inset='true']
+    padding-left: 1.75rem
+
+  &[data-variant='destructive']
+    color: var(--error600)
+    svg
+      color: var(--error600)
+    &:focus, &:hover
+      background-color: rgba(239, 68, 68, 0.12)
+      color: var(--error600)
+
+.checkboxItem, .radioItem
+  padding-left: 2rem
+  padding-right: 2rem
+
+.itemIndicator
+  position: absolute
+  right: 0.5rem
+  display: flex
+  align-items: center
+  justify-content: center
+
+.label
+  padding: 0.375rem 0.75rem
+  font-size: 0.75rem
+  font-weight: 500
+  color: #64748b
+  &[data-inset='true']
+    padding-left: 1.75rem
+
+.separator
+  margin: 0.375rem 0
+  height: 1px
+  background-color: rgba(0, 0, 0, 0.08)
+
+.shortcut
+  margin-left: auto
+  font-size: 0.75rem
+  letter-spacing: 0.1em
+  color: #64748b
+
+.subContent
+  background-color: $dropdown-bg
+  color: $dropdown-text
+  min-width: 6rem
+  border-radius: 0.75rem
+  padding: 0.5rem
+  box-shadow: $dropdown-shadow
+  z-index: 50
+  overflow: hidden
+  transform-origin: var(--radix-dropdown-menu-content-transform-origin)
